@@ -1,14 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using spapi.Services;
 using spapi.Interfaces;
-using spapi.Models;
 using spapi.Models.Account;
-using spapi.Data;
 
 namespace spapi.Controllers
 {
@@ -119,7 +112,7 @@ namespace spapi.Controllers
                 return BadRequest(ModelState);
             }
             string strCode = code.Trim();
-            return Ok( _accountService.CheckCodeExpired(Convert.ToInt32(strCode)));
+            return Ok(_accountService.CheckCodeExpired(Convert.ToInt32(strCode)));
         }
 
         /// <summary>
@@ -139,7 +132,7 @@ namespace spapi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            return Ok(_accountService.ChangePassword(pwd,email, code));
+            return Ok(_accountService.ChangePassword(pwd, email, code));
         }
 
     }

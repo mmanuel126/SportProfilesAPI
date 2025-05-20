@@ -42,6 +42,8 @@ namespace spapi.Helper
             //(4) Send the MailMessage
             client.Send(mail);
         }
+
+        
     }
 }
 

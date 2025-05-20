@@ -15,7 +15,7 @@ namespace spapi.Repositories
     {
         readonly DBContextModel _context = context;
         private readonly IConfiguration _configuration = configuration;
-    
+
         /// <summary>
         /// Allows you to change user password.
         /// </summary>
@@ -38,7 +38,7 @@ namespace spapi.Repositories
         {
             var mlist = (from c in _context.TbMembers
                          join m in _context.TbMemberProfiles on c.MemberId equals m.MemberId
-                         where (c.Email == strEmail) && (c.Password == strPwd) && (c.Status == 2 || c.Status==3)
+                         where (c.Email == strEmail) && (c.Password == strPwd) && (c.Status == 2 || c.Status == 3)
                          select new UserModel()
                          {
                              MemberID = c.MemberId.ToString(),
@@ -269,6 +269,12 @@ namespace spapi.Repositories
                 return "";
         }
 
+        /// <summary>
+        /// Authenticate new registered user given email and code.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public string AuthenticateNewRegisteredUser(string email, string code)
         {
             List<ValidateNewRegisteredUserModel> memberList = ValidateNewRegisteredUser(email, Convert.ToInt32(code));
@@ -278,79 +284,6 @@ namespace spapi.Repositories
                 return "";
         }
 
-/*
-        public String RegisterUser(String fName, String lName, String email, String pwd, String day, String month, String year, String gender, string profileType, string device)
-        {
-            List<TbMember> lst = CheckEmailExists(email);
-            if (lst.Count != 0)
-            {
-                return "ExistingEmail";
-            }
-            else
-            {
-                string key = "r0b1nr0y";
-                string strPwd = EncryptionHelper.Encrypt(pwd.Trim(), key);
-                int code = CreateNewUser(fName, lName, email, strPwd, gender, month, day, year, profileType);
-                SendEmail(email, code.ToString(), fName, lName, device);
-                return "NewEmail";
-            }
-        }
-
-        private void SendEmail(string email, string code, string firstName, string lastName, string device)
-        {
-            string  name = _configuration.GetValue<string>("AppStrings:AppAdmin") ?? "";
-            string fromEmail = _configuration.GetValue<string>("AppStrings:AppFromEmail") ?? "";
-            string smtpHost = _configuration.GetValue<string>("AppStrings:AppSMTPHost") ?? "";
-            int smtpPort = Convert.ToInt32(_configuration.GetValue<string>("AppStrings:AppSMTPPort"));
-            string appSMTPpwd = _configuration.GetValue<string>("AppStrings:AppSMTPpwd") ?? "";
-
-            string toEmail = email;
-            string fullName = firstName.Trim() + " " + lastName.Trim();
-            string subject = "Account Confirmation‏";
-            string body = HTMLEmailBodyText(email, fullName, code, firstName, device);
-
-            SendMailHelper.SendMail(smtpHost, smtpPort, appSMTPpwd, name, fromEmail, toEmail, subject, body, true);
-        }
-
-        private string HTMLEmailBodyText(string email, string name, string code, string firstName, string device)
-        {
-            string appName = _configuration.GetValue<string>("AppStrings:AppName") ?? "";
-            string webSiteLink = _configuration.GetValue<string>("AppStrings:CompleteRegistrationLink") ?? "";
-            string str = "";
-
-            str += "<table width='100%' style='text-align: center;'>";
-            str += "<tr>";
-            str += "<td style='font-weight: bold; font-size: 12px; height: 25px; text-align: left; background-color: red";
-            str += "vertical-align: middle; color: White;'>";
-            str = str + "&nbsp;" + appName;
-            str += "</td>";
-            str += "</tr>";
-            str += "<tr><td>&nbsp;</td></tr>";
-            str += "<tr>";
-            str += "<td style='font-size: 12px; text-align: left; width: 100%; font-family: Trebuchet MS,Trebuchet,Verdana,Helvetica,Arial,sans-seri'>";
-            str = str + "<p>Hi " + name + ",<p/>";
-            str += "</td>";
-            str += "</tr>";
-            str += "<tr>";
-            str += "<td style='font-size: 12px; text-align: left; width: 100%; font-family: Trebuchet MS,Trebuchet,Verdana,Helvetica,Arial,sans-seri'>";
-            str = str + "<p>You recently registered for " + appName + ". To complete your registration, click the link below (or copy/paste the link to a browser):<br/>";
-            str += "<p />";
-            str = str + "<p><a href ='" + webSiteLink + "?code=" + code.ToString() + "&email=" + email + "&fname=" + firstName + "'>" + webSiteLink + "?code=" + code.ToString() + "&email=" + email + "&device=" + device + "</a></p>";
-            str += "<p/>";
-            str = str + "<p>Your registration code is: " + code;
-            str += "<p/>";
-            str = str + "<p>" + appName + " is an exciting new sport social networking site that helps athletes showcase their talents so they can potentially attract sport agents. It is also a tool for people to communicate and stay connected with other sport fanatics. Once you become ";
-            str += "a member, you'll be able to share your sport experience with the rest of the world.</p>";
-            str += "<p/>";
-            str += "Thanks.<br />";
-            str = str + appName + " Team<br />";
-            str += "</p>";
-            str += "<p></p><p>";
-            str += "</td>";
-            str += "</tr>";
-            str += "</table>";
-            return str;
-        } */
     }
 }
 
